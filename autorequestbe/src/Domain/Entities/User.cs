@@ -30,7 +30,6 @@ public class User
     public DateTimeOffset UpdatedAtUtc { get; private set; }
 
     public ICollection<Session> Sessions { get; set; } = new List<Session>();
-    public string TestColumn { get; set; } = string.Empty;
 
     public void Verify()
     {
