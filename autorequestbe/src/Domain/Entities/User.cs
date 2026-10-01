@@ -15,21 +15,23 @@ public class User
 
     public bool IsVerified { get; private set; }
 
-    public bool IsProfileComplete =>
-        !string.IsNullOrWhiteSpace(Name)
-        && !string.IsNullOrWhiteSpace(Email);
+    // null = no role yet (new user); an admin sets it to User or Admin
+    public RoleType? Role { get; set; }
 
-    public bool CanAccessSystem =>
-        IsVerified
-        && IsProfileComplete
-        && Status == StatusType.Active;
-
-    public RoleType Role { get; set; } = RoleType.User;
-
-    public DateTimeOffset CreatedAtUtc { get; set; }
-    public DateTimeOffset UpdatedAtUtc { get; private set; }
+    public DateTimeOffset CreatedAtUtc { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset UpdatedAtUtc { get; private set; } = DateTimeOffset.UtcNow;
 
     public ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    // Can log in at all (users without a role included)
+    public bool CanAccessSystem =>
+        IsVerified
+        && Status == StatusType.Active;
+
+    // Can use the advanced features (a role was granted by an admin)
+    public bool HasFullAccess =>
+        CanAccessSystem
+        && Role is not null;
 
     public void Verify()
     {
