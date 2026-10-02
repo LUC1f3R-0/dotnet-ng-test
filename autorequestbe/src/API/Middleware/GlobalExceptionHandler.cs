@@ -1,4 +1,5 @@
 using API.Models.Responses;
+using Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace API.Exceptions;
