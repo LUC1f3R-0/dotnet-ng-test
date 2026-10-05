@@ -1,6 +1,6 @@
 using Infrastructure.Options;
 
-namespace API.Cors;
+namespace API.Extentions.Cors;
 
 public static class CorsExtensions
 {
