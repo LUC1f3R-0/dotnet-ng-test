@@ -1,4 +1,5 @@
 using Application.Authentication.Abstractions;
+using Application.Authentication.Register.Result;
 using Application.Exceptions;
 using Domain.Entities;
 
@@ -15,7 +16,7 @@ public sealed class RegisterService : IRegisterService
         _passwordHasher = passwordHasher;
     }
 
-    public async Task RegisterAsync(RegisterInput input, CancellationToken ct = default)
+    public async Task<RegisterResult> RegisterAsync(RegisterInput input, CancellationToken ct = default)
     {
         if (input.Pass != input.ConfirmPass)
         {
@@ -38,6 +39,19 @@ public sealed class RegisterService : IRegisterService
             PasswordHash = hashedPassword
         };
 
-        await _authRepository.AddUserAsync(user, ct);
+        var createdUser = await _authRepository.AddUserAsync(user, ct);
+
+        return ToResult(createdUser);
+    }
+
+    private static RegisterResult ToResult(User user)
+    {
+        return new RegisterResult(
+            user.UserUuid,
+            user.Name,
+            user.Email,
+            user.Status,
+            user.IsVerified
+        );
     }
 }

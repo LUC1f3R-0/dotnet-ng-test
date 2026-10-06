@@ -1,7 +1,6 @@
 using Application.Authentication.Abstractions;
 using Infrastructure.Options;
 using Infrastructure.Persistence.Repositories;
-using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +34,6 @@ public static class PersistenceDependencyInjection
 
         services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(connectionString));
         services.AddScoped<IAuthRepository, AuthRepository>();
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
         return services;
     }
 }

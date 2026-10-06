@@ -1,6 +1,7 @@
 using API.Models.Requests;
 using API.Models.Responses;
 using Application.Authentication.Register;
+using Application.Authentication.Register.Result;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -32,12 +33,13 @@ public sealed class AuthController : ControllerBase
             ConfirmPass: request.ConfirmPassword
         );
 
-        await _registerService.RegisterAsync(input, ct);
-
-        return StatusCode(StatusCodes.Status201Created, new ApiResponses<object>
-        {
-            Success = true,
-            Message = "Register success"
-        });
+        var user = await _registerService.RegisterAsync(input, ct);
+        
+        return StatusCode(StatusCodes.Status201Created, new ApiResponses<RegisterResult>
+            {
+                Success = true,
+                Message = "Registered successfully.",
+                Data = user
+            });
     }
 }

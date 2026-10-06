@@ -23,15 +23,7 @@ public class AuthRepository : IAuthRepository
     {
         await _context.Users.AddAsync(user, ct);
         await _context.SaveChangesAsync(ct);
-
-        string[] input = { user.Name, user.Email };
-
-        foreach (var value in input)
-        {
-            Console.WriteLine(value);
-        }
-
-        Console.WriteLine();
+        
         return user;
     }
 }
