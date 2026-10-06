@@ -10,12 +10,12 @@ namespace API.Controllers;
 public sealed class AuthController : ControllerBase
 {
     private readonly IRegisterService _registerService;
-    
+
     public AuthController(IRegisterService registerService)
     {
         _registerService = registerService;
-    }    
-    
+    }
+
     [HttpGet("me")]
     public ActionResult<object> Me()
     {
@@ -26,12 +26,14 @@ public sealed class AuthController : ControllerBase
     public async Task<ActionResult<ApiResponses<object>>> Register([FromBody] RegisterRequest request, CancellationToken ct)
     {
         var input = new RegisterInput(
-            Name: request.Name,
-            Email: request.Email,
-            Password: request.Password,
-            ConfirmPassword: request.ConfirmPassword);
-    
+            Name: request.Name?.Trim(),
+            Email: request.Email.Trim().ToLowerInvariant(),
+            Pass: request.Password,
+            ConfirmPass: request.ConfirmPassword
+        );
+
         await _registerService.RegisterAsync(input, ct);
+
         return StatusCode(StatusCodes.Status201Created, new ApiResponses<object>
         {
             Success = true,

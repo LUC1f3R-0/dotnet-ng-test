@@ -1,23 +1,43 @@
+using Application.Authentication.Abstractions;
+using Application.Exceptions;
+using Domain.Entities;
+
 namespace Application.Authentication.Register;
 
 public sealed class RegisterService : IRegisterService
 {
-    // private readonly IRegisterService _registerService;
-    
-    // public RegisterService(IRegisterService register)
-    // {
-    //      _registerService = register;
-    // }
+    private readonly IAuthRepository _authRepository;
+    private readonly IPasswordHasher _passwordHasher;
+
+    public RegisterService(IAuthRepository authRepository, IPasswordHasher passwordHasher)
+    {
+        _authRepository = authRepository;
+        _passwordHasher = passwordHasher;
+    }
 
     public async Task RegisterAsync(RegisterInput input, CancellationToken ct = default)
     {
-        string[] inputs = [input.Name!, input.Email, input.Password, input.ConfirmPassword];
-        
-        foreach(string text in inputs)
+        if (input.Pass != input.ConfirmPass)
         {
-            Console.WriteLine(text);
+            throw new ValidationException("Passwords do not match.");
         }
-        await Task.CompletedTask;
-        return;
+
+        var emailExists = await _authRepository.EmailExistsAsync(input.Email, ct);
+
+        if (emailExists)
+        {
+            throw new ConflictException("Email already exists.");
+        }
+
+        var hashedPassword = _passwordHasher.Hash(input.Pass);
+
+        var user = new User
+        {
+            Name = input.Name ?? string.Empty,
+            Email = input.Email,
+            PasswordHash = hashedPassword
+        };
+
+        await _authRepository.AddUserAsync(user, ct);
     }
 }
