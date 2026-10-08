@@ -65,7 +65,7 @@ export class Register {
     }
 
     this.isSubmited.set(true);
-
+console.log(this.registerForm.getRawValue())
     this.authService.register(this.registerForm.getRawValue()).subscribe({
       next: (response) => {
         const { success } = response;

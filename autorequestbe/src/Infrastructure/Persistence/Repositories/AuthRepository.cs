@@ -23,7 +23,12 @@ public class AuthRepository : IAuthRepository
     {
         await _context.Users.AddAsync(user, ct);
         await _context.SaveChangesAsync(ct);
-        
+
         return user;
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken ct = default)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
     }
 }

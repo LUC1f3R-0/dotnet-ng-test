@@ -8,11 +8,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.me().pipe(
-    map(isLoggedIn =>
-      isLoggedIn
-        ? router.parseUrl(route.queryParamMap.get('returnUrl') ?? '/dashboard')
-        : true
-    ),
+    map(isLoggedIn => isLoggedIn ? router.parseUrl(route.queryParamMap.get('returnUrl') ?? '/dashboard') : true),
     catchError(() => of(true)) // request failed -> treat as not logged in
   );
 };

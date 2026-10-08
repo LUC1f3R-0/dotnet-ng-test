@@ -7,25 +7,17 @@
     <div>
       <label>Name:</label>
 
-      <input
-        type="text"
-        placeholder="John Joe"
-        formControlName="name"
-      />
+      <input  type="text" placeholder="John Joe" formControlName="name"/>
 
-      @if (
-        registerForm.controls.name.touched &&
-        registerForm.controls.name.errors?.['required']
-      ) {
+      @if (registerForm.controls.name.touched && registerForm.controls.name.errors?.['required'])
+      {
         <div class="text-red-600">
           Name required
         </div>
       }
 
-      @if (
-        registerForm.controls.name.touched &&
-        registerForm.controls.name.errors?.['minlength']
-      ) {
+      @if (  registerForm.controls.name.touched &&  registerForm.controls.name.errors?.['minlength'])
+      {
         <div class="text-red-600">
           Name must be at least 5 characters
         </div>
@@ -36,25 +28,16 @@
     <div>
       <label>Email:</label>
 
-      <input
-        type="email"
-        placeholder="example@gmail.com"
-        formControlName="email"
-      />
-
-      @if (
-        registerForm.controls.email.touched &&
-        registerForm.controls.email.errors?.['required']
-      ) {
+      <input type="email" placeholder="example@gmail.com" formControlName="email"/>
+      @if (registerForm.controls.email.touched && registerForm.controls.email.errors?.['required'])
+      {
         <div class="text-red-600">
           Email required
         </div>
       }
 
-      @if (
-        registerForm.controls.email.touched &&
-        registerForm.controls.email.errors?.['email']
-      ) {
+      @if(registerForm.controls.email.touched && registerForm.controls.email.errors?.['email'])
+      {
         <div class="text-red-600">
           Enter a valid email
         </div>
@@ -65,34 +48,24 @@
     <div>
       <label>Password:</label>
 
-      <input
-        type="password"
-        placeholder="********"
-        formControlName="password"
-      />
+      <input type="password" placeholder="********" formControlName="password"/>
 
-      @if (
-        registerForm.controls.password.touched &&
-        registerForm.controls.password.errors?.['required']
-      ) {
+      @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['required'])
+      {
         <div class="text-red-600">
           Password required
         </div>
       }
 
-      @if (
-        registerForm.controls.password.touched &&
-        registerForm.controls.password.errors?.['minlength']
-      ) {
+      @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['minlength'])
+      {
         <div class="text-red-600">
           Password must be at least 8 characters
         </div>
       }
 
-      @if (
-        registerForm.controls.password.touched &&
-        registerForm.controls.password.errors?.['pattern']
-      ) {
+      @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['pattern'])
+      {
         <div class="text-red-600">
           Password must contain uppercase, lowercase, number and special character
         </div>
@@ -103,25 +76,17 @@
     <div>
       <label>Confirm Password:</label>
 
-      <input
-        type="password"
-        placeholder="********"
-        formControlName="confirmPassword"
-      />
+      <input type="password" placeholder="********" formControlName="confirmPassword"/>
 
-      @if (
-        registerForm.controls.confirmPassword.touched &&
-        registerForm.controls.confirmPassword.errors?.['required']
-      ) {
+      @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.errors?.['required'])
+      {
         <div class="text-red-600">
           Confirm password required
         </div>
       }
 
-      @if (
-        registerForm.controls.confirmPassword.touched &&
-        registerForm.errors?.['passwordMismatch']
-      ) {
+      @if (registerForm.controls.confirmPassword.touched && registerForm.errors?.['passwordMismatch'])
+      {
         <div class="text-red-600">
           Passwords do not match
         </div>
@@ -131,11 +96,7 @@
   </div>
 
 
-  <button
-    type="submit"
-    [disabled]="registerForm.invalid || isSubmited()"
-    class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded"
-  >
+  <button type="submit" [disabled]="registerForm.invalid || isSubmited()" class="bg-blue-500 hover:bg-blue-400 py-2 px-4 rounded">
     {{ isSubmited() ? 'Submitting...' : 'Submit' }}
   </button>
 

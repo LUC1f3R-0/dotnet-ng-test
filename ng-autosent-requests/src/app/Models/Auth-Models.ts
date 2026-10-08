@@ -5,3 +5,9 @@ export interface RegisterDetails
   password: string,
   confirmPassword: string
 }
+
+export interface LoginDetails
+{
+  email: string,
+  password: string
+}

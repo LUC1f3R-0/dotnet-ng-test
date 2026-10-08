@@ -1,4 +1,4 @@
-using Application.Authentication.Register.Result;
+using API.Register.Models;
 
 namespace Application.Authentication.Register;
 

@@ -1,5 +1,5 @@
+using API.Register.Models;
 using Application.Authentication.Abstractions;
-using Application.Authentication.Register.Result;
 using Application.Exceptions;
 using Domain.Entities;
 

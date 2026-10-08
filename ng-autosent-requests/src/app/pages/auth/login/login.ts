@@ -1,14 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { inject } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
-export class Login implements OnInit {
+export class Login {
 
-  ngOnInit(): void{
-    console.log("leaded the loggin");
+  private fb = inject(FormBuilder);
+
+  loginForm = this.fb.nonNullable.group(
+    {
+      email: ['', [
+        Validators.required,
+        Validators.email,
+      ]],
+      passoword: ['', [
+        Validators.required,
+      ]],
+    }
+  )
+  
+  onLogin() {
+    if (this.loginForm.invalid)
+    {
+      this.loginForm.markAllAsTouched();
+      return;  
+    }
+    console.log(this.loginForm.getRawValue());
   }
 }
