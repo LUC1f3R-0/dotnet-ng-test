@@ -34,6 +34,8 @@ public static class PersistenceDependencyInjection
 
         services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(connectionString));
         services.AddScoped<IAuthRepository, AuthRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        
         return services;
     }
 }

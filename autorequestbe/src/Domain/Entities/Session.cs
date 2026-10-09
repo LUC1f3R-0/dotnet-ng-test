@@ -13,6 +13,10 @@ public class Session
     public string DeviceId { get; set; } = string.Empty;
     public string DeviceName { get; set; } = string.Empty;
 
+    public DateTimeOffset ExpiresAtUtc { get; set; }
+    
+    public DateTimeOffset? RevokedAtUtc { get; set; }
+
     public DateTimeOffset CreatedAtUtc { get; set; }
     public DateTimeOffset UpdatedAtUtc { get; set; }
 }

@@ -28,6 +28,10 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
 
         builder.Property(s => s.DeviceName).HasMaxLength(200);
 
+        builder.Property(s => s.ExpiresAtUtc).IsRequired();
+        
+        builder.Property(s => s.RevokedAtUtc);
+
         builder.Property(s => s.CreatedAtUtc).IsRequired();
 
         builder.Property(s => s.UpdatedAtUtc).IsRequired();

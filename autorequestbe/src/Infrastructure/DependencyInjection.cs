@@ -16,6 +16,8 @@ public static class DependencyInjection
         services.AddEmail();
         services.AddPersistence(configuration);
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
         services.AddHostedService<StartupInitializer>();
         services.Configure<SmtpOptions>(configuration.GetSection(SmtpOptions.SectionName));
 

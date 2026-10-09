@@ -19,5 +19,11 @@ public sealed record LoginResult
     string Name,
     string Email,
     StatusType Status,
-    bool IsVerified
+    bool IsVerified,
+    RoleType? Role,
+
+    string AccessToken,
+    string RefreshToken,
+    DateTimeOffset AccessTokenExpiresAtUtc,
+    DateTimeOffset RefreshTokenExpiresAtUtc
 );
