@@ -14,11 +14,7 @@ public sealed class LoginService : ILoginService
     private readonly ITokenService _tokenService;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public LoginService(
-        IAuthRepository authRepository,
-        IPasswordHasher passwordHasher,
-        ITokenService tokenService,
-        IRefreshTokenRepository refreshTokenRepository)
+    public LoginService(IAuthRepository authRepository, IPasswordHasher passwordHasher, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
     {
         _authRepository = authRepository;
         _passwordHasher = passwordHasher;
@@ -26,41 +22,29 @@ public sealed class LoginService : ILoginService
         _refreshTokenRepository = refreshTokenRepository;
     }
 
-    public async Task<LoginResult> LoginAsync(
-        LoginInput input,
-        CancellationToken ct = default)
+    public async Task<LoginResult> LoginAsync(LoginInput input, CancellationToken ct = default)
     {
         var email = input.Email.Trim().ToLowerInvariant();
 
-        var user = await _authRepository.GetUserByEmailAsync(
-            email, ct);
+        var user = await _authRepository.GetUserByEmailAsync(email, ct);
 
-        if (user is null ||
-            !_passwordHasher.Verify(
-                input.Password,
-                user.PasswordHash))
+        if (user is null ||!_passwordHasher.Verify(input.Password,user.PasswordHash))
         {
-            throw new UnauthorizedException(
-                "Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
         if (!user.CanAccessSystem)
         {
-            throw new UnauthorizedException(
-                "Account is not verified or is inactive.");
+            throw new UnauthorizedException("Account is not verified or is inactive.");
         }
 
-        var accessToken =
-            _tokenService.GenerateAccessToken(user);
+        var accessToken = _tokenService.GenerateAccessToken(user);
 
-        var refreshToken =
-            _tokenService.GenerateRefreshToken();
+        var refreshToken = _tokenService.GenerateRefreshToken();
 
         var now = DateTimeOffset.UtcNow;
 
-        var refreshTokenHash = Convert.ToHexString(
-            SHA256.HashData(
-                Encoding.UTF8.GetBytes(refreshToken.Value)));
+        var refreshTokenHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken.Value)));
 
         var session = new Session
         {
