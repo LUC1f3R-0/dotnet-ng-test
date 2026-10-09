@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -11,6 +12,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 export class Login {
 
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   loginForm = this.fb.nonNullable.group(
     {
@@ -18,7 +20,7 @@ export class Login {
         Validators.required,
         Validators.email,
       ]],
-      passoword: ['', [
+      password: ['', [
         Validators.required,
       ]],
     }
@@ -31,5 +33,17 @@ export class Login {
       return;  
     }
     console.log(this.loginForm.getRawValue());
+
+    this.authService.login(this.loginForm.getRawValue()).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (err) => {
+        
+      },
+      complete: () => {
+        
+      }
+    })
   }
 }
