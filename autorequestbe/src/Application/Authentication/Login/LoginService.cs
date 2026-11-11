@@ -65,6 +65,7 @@ public sealed class LoginService : ILoginService
             user.Status,
             user.IsVerified,
             user.Role,
+
             accessToken.Value,
             refreshToken.Value,
             accessToken.ExpiresAtUtc,

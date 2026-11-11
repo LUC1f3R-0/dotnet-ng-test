@@ -77,9 +77,8 @@ public sealed class AuthController : ControllerBase
             result.AccessTokenExpiresAtUtc,
             result.RefreshTokenExpiresAtUtc
         );
-
-        // Do not return access or refresh tokens in JSON.
-        return Ok(new ApiResponses<object>
+        
+        return StatusCode(StatusCodes.Status200OK, new ApiResponses<object>
         {
             Success = true,
             Message = "Login Success",

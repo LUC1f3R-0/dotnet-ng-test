@@ -10,7 +10,7 @@ public sealed class AuthCookieService
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Expires = accessExpiresAt,
-                Path = "/"
+                Path = "/api"
             });
 
         response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
@@ -19,7 +19,7 @@ public sealed class AuthCookieService
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Expires = refreshExpiresAt,
-                Path = "/api/auth"
+                Path = "/api/auth/refresh"
             });
     }
 
@@ -29,14 +29,14 @@ public sealed class AuthCookieService
             {
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
-                Path = "/"
+                Path = "/api"
             });
 
         response.Cookies.Delete("refreshToken", new CookieOptions
             {
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
-                Path = "/api/auth"
+                Path = "/api/auth/refresh"
             });
     }
 }

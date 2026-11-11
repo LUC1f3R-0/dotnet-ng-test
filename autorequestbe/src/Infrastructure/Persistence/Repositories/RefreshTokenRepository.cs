@@ -1,6 +1,5 @@
 using Application.Authentication.Abstractions;
 using Domain.Entities;
-using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
