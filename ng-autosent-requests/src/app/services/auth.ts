@@ -11,15 +11,19 @@ export class AuthService {
 
   private http = inject(HttpClient);
   
-  me(): Observable<boolean> {
-    return this.http.get<boolean>(`${environment.baseUrl}/auth/me`);
-  };
+  me(): Observable<User> {
+    return this.http.get<User>(`${environment.baseUrl}/auth/me`,
+      { withCredentials: true }
+    );
+  }
   
   register(register: RegisterDetails): Observable<APIResponse<null>> {
     return this.http.post<APIResponse<null>>(`${environment.baseUrl}/auth/register`, register);
   }
 
   login(login: LoginDetails): Observable<APIResponse<User>> {
-    return this.http.post<APIResponse<User>>(`${environment.baseUrl}/auth/login`, login);
+    return this.http.post<APIResponse<User>>(`${environment.baseUrl}/auth/login`, login,
+      { withCredentials: true }
+    );
   }
 }
