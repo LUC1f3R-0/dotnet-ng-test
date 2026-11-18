@@ -4,6 +4,7 @@ using API.Models.Requests;
 using API.Models.Responses;
 using API.Register.Models;
 using Application.Authentication.Login;
+using Application.Authentication.Refresh;
 using Application.Authentication.Register;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,21 @@ public sealed class AuthController : ControllerBase
     private readonly IRegisterService _registerService;
     private readonly ILoginService _loginService;
     private readonly AuthCookieService _authCookieService;
+    private readonly IRefreshTokenService _refreshTokenService;
 
-    public AuthController(IRegisterService registerService, ILoginService loginService, AuthCookieService authCookieService)
+    public AuthController(IRegisterService registerService, ILoginService loginService, AuthCookieService authCookieService, IRefreshTokenService refreshTokenService)
     {
         _registerService = registerService;
         _loginService = loginService;
         _authCookieService = authCookieService;
+        _refreshTokenService = refreshTokenService;
     }
 
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me()
     {
+        Console.WriteLine("me controller running");
         return Ok(new
         {
             UserUuid = User.FindFirstValue("sub"),
@@ -77,7 +81,7 @@ public sealed class AuthController : ControllerBase
             result.AccessTokenExpiresAtUtc,
             result.RefreshTokenExpiresAtUtc
         );
-        
+
         return StatusCode(StatusCodes.Status200OK, new ApiResponses<object>
         {
             Success = true,
@@ -93,4 +97,44 @@ public sealed class AuthController : ControllerBase
             }
         });
     }
+
+    [AllowAnonymous]
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(CancellationToken ct)
+    {
+        Console.WriteLine("refresh token controller running");
+            // Retrieve refresh token from the browser cookie.
+            var refreshToken = Request.Cookies["refreshToken"];
+    
+            // Validate token, retrieve session, rotate refresh token,
+            // and generate a new access token.
+            var result = await _refreshTokenService.RefreshAsync(refreshToken, ct);
+    
+            // Missing, expired, revoked, or invalid refresh session.
+            if (result is null)
+            {
+                return Unauthorized(new ApiResponses<object>
+                {
+                    Success = false,
+                    Message = "Refresh token is invalid or expired.",
+                    Data = null
+                });
+            }
+    
+            // Replace both HttpOnly cookies.
+            _authCookieService.SetCookies(
+                Response,
+                result.AccessToken,
+                result.RefreshToken,
+                result.AccessTokenExpiresAtUtc,
+                result.RefreshTokenExpiresAtUtc
+            );
+    
+            return Ok(new ApiResponses<object>
+            {
+                Success = true,
+                Message = "Session refreshed successfully.",
+                Data = null
+            });
+        }
 }

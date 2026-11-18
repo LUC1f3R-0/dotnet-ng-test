@@ -4,8 +4,9 @@ import { About } from './pages/about/about';
 import { Contact } from './pages/contact/contact';
 import { Login } from './pages/auth/login/login';
 import { Register } from './pages/auth/register/register';
-import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
+import { authGuard } from './guards/auth.guard';
+
 
 export const routes: Routes = [
   { path: '', component: Home, },
