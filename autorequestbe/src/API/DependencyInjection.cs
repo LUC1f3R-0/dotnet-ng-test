@@ -5,6 +5,7 @@ using API.Authentication;
 using Infrastructure.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using API.Extensions.Scheduling;
 
 namespace API;
 
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddFrontendCors(configuration);
+        services.AddQuartzJobs(configuration);
 
         services.AddScoped<AuthCookieService>();
 
